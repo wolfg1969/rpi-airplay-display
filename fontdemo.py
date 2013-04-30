@@ -3,7 +3,7 @@
 # Needs freetype-py>=1.0
 
 # For more info see:
-# http://dbader.org/blob/monochrome-font-rendering-with-freetype-and-python
+# http://dbader.org/blog/monochrome-font-rendering-with-freetype-and-python
 
 # The MIT License (MIT)
 #
