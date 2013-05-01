@@ -254,35 +254,3 @@ if __name__ == '__main__':
 
     # Choosing the baseline correctly
     print(repr(fnt.render_text('hello, world.')))
-
-    # f = Font('articles/Climacons.ttf', 32)
-    # print(repr(f.render_text('12345"')))
-    # print(repr(f.render_text('1"')))
-    # print(repr(f.render_text('"')))
-    # print(repr(f.render_character('"')))
-
-    # f = Font('articles/helvetica.ttf', 24)
-    # print('\n')
-    # print(repr(f.render_character('-')))
-    # print(repr(f.render_character('x')))
-    # print(repr(f.render_character('g')))
-    # print(repr(f.render_character(',')))
-    # print(repr(f.render_character('_')))
-    # print(repr(f.render_character('y')))
-    # print(repr(f.render_character('h')))
-    # print('\n')
-    # print(repr(f.render_text(u'hello, world.')))
-    # print(repr(f.render_text('    hello    ')))
-    # print('\n')
-    # print(repr(f.render_text('      e      ')))
-    # print('\n')
-    # print(repr(f.render_text('AVHello, hefty. AVA')))
-    # print(repr(f.render_text('AVA')))
-    # print(repr(f.render_text('AWA')))
-
-    # print(repr(f.render_text('-2 Hello')))
-    # f = Font('articles/font.ttf', 16)
-    # print(repr(f.render_text('Hello, World.')))
-
-    # f = Font('articles/VintageOne.ttf', 32)
-    # print(repr(f.render_text(u'AVHello, World.')))
