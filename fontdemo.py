@@ -3,7 +3,7 @@
 # Needs freetype-py>=1.0
 
 # For more info see:
-# http://dbader.org/blog/monochrome-font-rendering-with-freetype-and-python
+# http://dbader.org/blob/monochrome-font-rendering-with-freetype-and-python
 
 # The MIT License (MIT)
 #
@@ -136,7 +136,7 @@ class Glyph(object):
                 # output bitmap. Sometimes we're only unpacking a fraction of a byte
                 # because glyphs may not always fit on a byte boundary. So we make sure
                 # to stop if we unpack past the current row of pixels.
-                for bit_index in range(0, min(8, bitmap.width - num_bits_done)):
+                for bit_index in range(min(8, bitmap.width - num_bits_done)):
 
                     # Unpack the next pixel from the current glyph byte.
                     bit = byte_value & (1 << (7 - bit_index))
@@ -212,7 +212,7 @@ class Font(object):
         If `width`, `height`, and `baseline` are not specified they are computed using
         the `text_dimensions' method.
         """
-        if width is None or height is None or baseline is None:
+        if None in (width, height, baseline):
             width, height, baseline = self.text_dimensions(text)
 
         x = 0
@@ -239,7 +239,7 @@ class Font(object):
 
 if __name__ == '__main__':
     # Be sure to place 'helvtica.ttf' (or any other ttf / otf font file) in the working directory.
-    fnt = Font('helvetica.ttf', 132)
+    fnt = Font('helvetica.ttf', 24)
 
     # Single characters
     ch = fnt.render_character('e')
@@ -254,3 +254,35 @@ if __name__ == '__main__':
 
     # Choosing the baseline correctly
     print(repr(fnt.render_text('hello, world.')))
+
+    # f = Font('articles/Climacons.ttf', 32)
+    # print(repr(f.render_text('12345"')))
+    # print(repr(f.render_text('1"')))
+    # print(repr(f.render_text('"')))
+    # print(repr(f.render_character('"')))
+
+    # f = Font('articles/helvetica.ttf', 24)
+    # print('\n')
+    # print(repr(f.render_character('-')))
+    # print(repr(f.render_character('x')))
+    # print(repr(f.render_character('g')))
+    # print(repr(f.render_character(',')))
+    # print(repr(f.render_character('_')))
+    # print(repr(f.render_character('y')))
+    # print(repr(f.render_character('h')))
+    # print('\n')
+    # print(repr(f.render_text(u'hello, world.')))
+    # print(repr(f.render_text('    hello    ')))
+    # print('\n')
+    # print(repr(f.render_text('      e      ')))
+    # print('\n')
+    # print(repr(f.render_text('AVHello, hefty. AVA')))
+    # print(repr(f.render_text('AVA')))
+    # print(repr(f.render_text('AWA')))
+
+    # print(repr(f.render_text('-2 Hello')))
+    # f = Font('articles/font.ttf', 16)
+    # print(repr(f.render_text('Hello, World.')))
+
+    # f = Font('articles/VintageOne.ttf', 32)
+    # print(repr(f.render_text(u'AVHello, World.')))
