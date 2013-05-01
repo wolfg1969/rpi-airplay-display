@@ -238,7 +238,7 @@ class Font(object):
         return outbuffer
 
 if __name__ == '__main__':
-    # Be sure to place 'helvtica.ttf' (or any other ttf / otf font file) in the working directory.
+    # Be sure to place 'helvetica.ttf' (or any other ttf / otf font file) in the working directory.
     fnt = Font('helvetica.ttf', 24)
 
     # Single characters
