@@ -1,0 +1,4 @@
+pytz
+astral
+Pillow
+freetype-py
