@@ -11,6 +11,46 @@ from pcd8544 import lcd
 from fontdemo import Font
 from pi_logo import demo
 
+VOLUME_LEVELS = {
+    '-144.000000': 0,
+    '-28.125000': 1,
+    '-26.250000': 2,
+    '-24.375000': 3,
+    '-22.500000': 4,
+    '-20.625000': 5,
+    '-18.750000': 6,
+    '-16.875000': 7,
+    '-15.000000': 8,
+    '-13.125000': 9,
+    '-11.250000': 10,
+    '-9.375000': 11,
+    '-7.500000': 12,
+    '-5.625000': 13,
+    '-3.750000': 14,
+    '-1.875000': 15,
+    '0.000000': 16,
+}
+
+VOLUME_FULL_BLOCK = [0x41, 0x41, 0x41, 0x41, 0x7F]
+VOLUME_BLANK_BLOCK = [0x7F, 0x7F, 0x7F, 0x7F, 0x7F]
+VOLUME_BAR_HEAD = [0x7F, 0x7F]
+VOLUME_BAR_TAIL = [0x7F, 0x7F]
+
+
+def get_volume_bar_data(volume):
+    volume_level = VOLUME_LEVELS.get(volume, 0)
+    return VOLUME_BAR_HEAD + VOLUME_FULL_BLOCK * volume_level + VOLUME_BLANK_BLOCK * (16 - volume_level) + VOLUME_BAR_TAIL
+
+
+def display_banner():
+    lcd.locate(0, 5)
+    lcd.text('@wolfg1969')
+
+
+def display_volume_bar(volume='-24.375000'):
+    lcd.locate(0, 4)
+    lcd.data(get_volume_bar_data(volume))
+
 
 def is_night():
     a = Astral()
@@ -26,7 +66,7 @@ def get_bitmap(text, **kwargs):
     font = kwargs.get('imageFont1')
     font2 = kwargs.get('imageFont2')
 
-    im = Image.new('L', (84,48))
+    im = Image.new('L', (84, 32))
     draw = ImageDraw.Draw(im)
 
     width, height, baseline = fnt.text_dimensions(text)
@@ -67,7 +107,7 @@ def get_bitmap(text, **kwargs):
         pos_x = char_left
         pos_y = (line - 1) * (height+1)
 
-        if (pos_y + height) > 48:
+        if (pos_y + height) > 32:
             break
 
         # print line, line_start, pos_x, pos_y, char
@@ -82,7 +122,7 @@ def get_bitmap(text, **kwargs):
     cols = []
     for x in range(84):
         col = []
-        for y in range(48):
+        for y in range(32):
             p = ord(img_bytes[y*84 + x])
             if (p > 1):
                 p = 1
@@ -92,7 +132,7 @@ def get_bitmap(text, **kwargs):
     # print(len(cols))
     bitmap = []
     x = 1
-    for i in range(6):
+    for i in range(4):
         # print col
         j = i * 8
         for col in cols:
@@ -104,17 +144,25 @@ def get_bitmap(text, **kwargs):
     return bitmap
 
 
+def display_song_meta(text, **kwargs):
+    lcd.locate(0, 0)
+    bitmap = get_bitmap(text, **kwargs)
+    lcd.data(bitmap)
+
 def send_to_display(fields, **kwargs):
 
-    text = u"{artist}\n{title}".format(artist=fields[0], title=fields[1], )
+    artist=fields[0]
+    title=fields[1]
+    volume = fields[6]
 
-    bitmap = get_bitmap(text, **kwargs)
+    text = u"{artist} {title}".format(artist=artist, title=title, )
 
     lcd.backlight(not is_night())
+    # lcd.backlight(1)
 
-    lcd.cls()
-    lcd.locate(0,0)
-    lcd.data(bitmap)
+    display_song_meta(text, **kwargs)
+    display_volume_bar(volume)
+    display_banner()
 
 
 def read_now_playing(**kwargs):
@@ -146,10 +194,14 @@ def read_now_playing(**kwargs):
 
 if __name__ == '__main__':
 
-    time.sleep(10)
-
     lcd.init(contrast=0xBB)
     demo()
+
+    time.sleep(2)
+    lcd.cls()
+
+    display_volume_bar()
+    display_banner()
 
     font_info = {
         'font': Font('Zpix.ttf', 12),
