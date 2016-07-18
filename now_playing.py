@@ -44,7 +44,7 @@ def get_volume_bar_data(volume):
 
 def display_banner():
     lcd.locate(0, 5)
-    lcd.text('@wolfg1969')
+    lcd.text('  @wolfg1969  ')
 
 
 def display_volume_bar(volume='-24.375000'):
